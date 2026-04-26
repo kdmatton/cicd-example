@@ -1,0 +1,29 @@
+name: Test API  
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@main
+      
+      - name: Python set up
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Get dependencies
+        run: pip install fastapi uvicorn requests
+
+      - name: Run server 
+        run: uvicorn app:app --host 127.0.0.1 --port 8000 &
+
+      - name: Wait Server
+        run: sleep 3 
+
+      - name: Test Endpoint
+        run: python server.py
+      
